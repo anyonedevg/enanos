@@ -1,0 +1,17 @@
+<div class="container">
+
+  <h1 class="display-5 mb-5">Veterinarias</h1>
+
+  <div class="card-columns">
+    {{#each vets}}
+    <div class="card border-secondary">
+      <img src="{{image_url}}" class="card-img-top" alt="...">
+      <div class="card-header">{{vet_id.name}}</div>
+      <div class="card-body">
+        <a href="/vets/{{vet_id._id}}" class="btn btn-primary">Opina</a>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+</div>
