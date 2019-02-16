@@ -1,9 +1,12 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const favicon = require('serve-favicon');
+const flash = require('connect-flash');
 const morgan = require('morgan');
 const multer = require('multer');
+const passport = require('passport');
 const path = require('path');
+const session = require('express-session');
 
 // initializations
 const app = express();
@@ -14,6 +17,7 @@ const storage = multer.diskStorage({
   }
 });
 require('./database');
+require('./config/local-auth');
 
 // settings
 app.set('port', process.env.PORT || 3000);
@@ -32,12 +36,28 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(multer({ storage }).single('image'));
+app.use(session({
+  secret: 'mysecretsession',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
+  app.locals.signupMessage = req.flash('signupMessage');
+  app.locals.loginMessage = req.flash('loginMessage');
+  app.locals.user = req.user;
+  next();
+})
 
 
 // routes
 app.use(require('./routes'));
-app.use(require('./routes/vets'));
+app.use(require('./routes/vet'));
 app.use(require('./routes/admin'));
+app.use(require('./routes/comment'));
+app.use(require('./routes/user'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));

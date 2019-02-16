@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col col-md-3">
+
+      <div class="card">
+        <img src="{{vet.image_url}}" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">{{vet.vet_id.name}}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="fas fa-location-arrow"></i> {{vet.vet_id.address}}</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link"><i class="fas fa-star"></i> {{vet.vet_id.likes}}</a>
+          <a href="#" class="card-link"><i class="fas fa-eye"></i> {{vet.vet_id.views}}</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col col-md-7">
+      <h5 class="display-5">Cuenta tu experiencia</h5>
+      <div class="card">
+        <div class="card-body">
+          <form action="/comments/add-comment/{{vet.vet_id._id}}" method="POST">
+            <input type="hidden" name="user_id" value="{{user._id}}">
+            <div class="form-group">
+              <textarea class="form-control" name="content" placeholder="Ingresa tu Opinión"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Comentar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col col-md-2">
+      <p>Banner</p>
+      <p>{{user._id}}</p>
+    </div>
+  </div>
+</div>

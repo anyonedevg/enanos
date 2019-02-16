@@ -10,19 +10,22 @@ router.get('/vets', async (req, res) => {
     viewModel.vets = vets;
   }
 
-  res.render('vets', viewModel);
+  res.render('vet/vets', viewModel);
 });
 
 
 // ver veterinaria
 router.get('/vets/:vet_id', async (req, res) => {
-  let viewModel = { vets: {} };
+  let viewModel = { vet: {} };
   const { vet_id } = req.params;
-  const vet = await Photo.find({ vet_id }).populate('vet_id');
+  const vet = await Photo.findOne({ vet_id }).populate('vet_id');
+  if (vet) {
+    viewModel.vet = vet;
+    console.log(vet);
+    console.log(viewModel);
+  }
 
-  console.log(vet);
-
-  res.render('vet', viewModel);
+  res.render('vet/vet', viewModel);
 });
 
 module.exports = router;
