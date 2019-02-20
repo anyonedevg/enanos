@@ -1,18 +1,31 @@
 <div class="container">
 
-  <h1 class="display-5 mb-5">Veterinarias</h1>
-
-  <div class="card-columns">
-    {{#each vets}}
-    <div class="card border-secondary">
-      <img src="{{image_url}}" class="card-img-top" alt="...">
-      <div class="card-header">{{vet_id.name}}</div>
-      <div class="card-body">
-        <a href="/vets/{{vet_id._id}}" class="btn btn-primary">Opina</a>
-      </div>
-    </div>
-    {{/each}}
-    <p>{{user.email}}</p>
+  <div class="row">
+    <h3 class="display-5 mb-5">Veterinarias</h3>
   </div>
+
+
+  {{#distritos}}
+  <div class="row mb-5">
+
+    <div class="row col col-md-12">
+      <h5 class="display-5 mb-5 d-block">{{distrito}}</h5>
+    </div>
+
+
+    <div class="card-columns">
+      {{#vets}}
+      <div class="card" style="max-width:18rem;">
+        <img src="{{image_url}}" class="card-img-top">
+        <div class="card-body">
+          <h4 class="card-title">{{vet_id.name}}</h4>
+          <a href="/vets/{{vet_id._id}}" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Opina</a>
+        </div>
+      </div>
+      {{/vets}}
+    </div>
+
+  </div>
+  {{/distritos}}
 
 </div>

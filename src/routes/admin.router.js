@@ -1,8 +1,10 @@
+// requeriments
 const fs = require('fs-extra');
 const router = require('express').Router();
+const passport = require('passport');
 
 // models
-const { Vet, Photo } = require('../models');
+const { Photo, Vet } = require('../models');
 
 // cloudinary
 const cloudinary = require('cloudinary');
@@ -12,19 +14,23 @@ cloudinary.config({
   api_secret: '3zG4Eeyh53w-BIMzn2-H-Z94Jq8'
 });
 
-// añadir veterinaria
+// add vet
 router.get('/admin/add-vet', (req, res) => {
   res.render('admin/add-vet');
 });
 
 router.post('/admin/add-vet', async (req, res) => {
   try {
-    const cloudinaryResult = await cloudinary.v2.uploader.upload(req.file.path);
-    await fs.unlink(req.file.path);
+    const { path } = req.file;
+    const { address, district, name } = req.body;
+
+    const cloudinaryResult = await cloudinary.v2.uploader.upload(path);
+    await fs.unlink(path);
 
     const newVet = new Vet({
-      name: req.body.name,
-      address: req.body.address
+      name: name,
+      address: address,
+      district: district
     });
     const newVetResult = await newVet.save();
 
@@ -38,11 +44,12 @@ router.post('/admin/add-vet', async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+
   res.redirect('/admin/vets');
 
 });
 
-// ver veterinarias
+// see vets
 router.get('/admin/vets', async (req, res) => {
   let viewModel = { vets: {} };
   const vets = await Photo.find().populate('vet_id');
@@ -51,16 +58,14 @@ router.get('/admin/vets', async (req, res) => {
   }
 
   res.render('admin/vets', viewModel);
-
-  console.log(vets)
 });
 
-// eliminar veterinaria
+// delete vet
 router.get('/admin/delete-vet/:vet_id', async (req, res) => {
   const { vet_id } = req.params;
 
   const confirm = confirm('Desea eliminar este foto');
-  
+
   // photo
   const photo = await Photo.findOneAndDelete({ vet_id });
   // vet
@@ -75,6 +80,27 @@ router.get('/admin/delete-vet/:vet_id', async (req, res) => {
   res.redirect('/admin/vets');
 
 });
+
+// add admin
+router.get('/admin/add-admin', (req, res) => {
+  res.render('admin/add-admin');
+});
+
+
+router.post('/admin/add-admin', passport.authenticate('local-admin-signup', {
+  successRedirect: '/vets',
+  failureRedirect: '/admin/signup',
+  failureFlash: true
+}));
+
+
+// update vet image
+router.post('/admin/update-vet', (req, res) => {
+  console.log('BODY');
+  console.log(req.body);
+  console.log(req.file);
+  res.redirect('/admin/vets');
+})
 
 
 module.exports = router;

@@ -3,10 +3,11 @@ const { ObjectId } = Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const UserSchema = new Schema({
-  username: { type: String, required: true},
+  username: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  gravatar: { type: String, required: true }
+  gravatar: { type: String, required: true },
+  role: { type: String, default: 'usuario' }
 });
 
 UserSchema.methods.encryptPassword = (password) => {

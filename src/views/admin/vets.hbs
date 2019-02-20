@@ -1,3 +1,103 @@
+<div>
+  <a href="#" class="prueba455">Prueba</a>
+</div>
+<!-- modal for update vet data-->
+<div class="modal fade" id="modalVetImage" tabindex="-1" role="dialog" aria-labelledby="modalVetImageLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalVetImageLabel">Actualiza la imágen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/update-vet" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="hidden" id="update_vet_image" name="vet_id" value="">
+            <div class="form-group">
+              <label>Imágen</label>
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input type="file" name="image" class="custom-file-input inputGroupFile">
+                  <label class="custom-file-label">Elegir imágen</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-cloud-upload-alt"></i> Subir
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- modal for update vet image-->
+<div class="modal fade" id="modalVetData" tabindex="-1" role="dialog" aria-labelledby="modalVetDataLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalVetDataLabel">Actualiza los datos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/add-vet" method="POST">
+
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="name" class="form-control" placeholder="Nombre de la veterinaria">
+          </div>
+
+          <div class="form-group">
+            <label>Dirección</label>
+            <input type="text" name="address" class="form-control" placeholder="Dirección de la veterinaria">
+          </div>
+
+          <div class="form-group">
+            <label>Distrito</label>
+            <div class="input-group">
+              <select class="custom-select" name="district">
+                <option selected>Elige...</option>
+                <optgroup label="Lima">
+                  <option value="Ancón">Ancón</option>
+                  <option value="Carabayllo">Carabayllo</option>
+                  <option value="Comas">Comas</option>
+                  <option value="Los Olivos">Los Olivos</option>
+                  <option value="Puente Piedra">Puente Piedra</option>
+                  <option value="San Martín de Porres">San Martín de Porres</option>
+                </optgroup>
+                <optgroup label="Callao">
+                  <option value="Callao">Callao</option>
+                  <option value="Ventanilla">Ventanilla</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-cloud-upload-alt"></i> Subir
+          </button>
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="container">
 
   <div class="row justify-content-center">
@@ -19,6 +119,19 @@
             <td>{{vet_id.name}}</td>
             <td>
               <a href="{{image_url}}" class="btn" target="_blank"><i class="fas fa-eye"></i></a>
+
+              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-edit"></i>
+              </button>
+
+              <div class="dropdown-menu btn-edit-general" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="jajaja" data-toggle="modal" data-target="#modalVetImage">Editar
+                  imágen</a>
+                <a class="dropdown-item prueba999" href="#">Prueba</a>
+                <a class="dropdown-item" href="jajaja" data-toggle="modal" data-target="#modalVetData">Editar datos</a>
+              </div>
+
               <a href="/admin/delete-vet/{{vet_id._id}}" class="btn"><i class="fas fa-trash-alt"></i></a>
             </td>
           </tr>

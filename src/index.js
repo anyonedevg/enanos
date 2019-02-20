@@ -26,7 +26,8 @@ app.engine('.hbs', exphbs({
   defaultLayout: 'main',
   layoutsDir: path.join(app.get('views'), 'layouts'),
   partialsDir: path.join(app.get('views'), 'partials'),
-  extname: '.hbs'
+  extname: '.hbs',
+  helpers: require('./helpers/helpers')
 }));
 app.set('view engine', '.hbs');
 
@@ -53,11 +54,12 @@ app.use((req, res, next) => {
 
 
 // routes
-app.use(require('./routes'));
-app.use(require('./routes/vet'));
-app.use(require('./routes/admin'));
-app.use(require('./routes/comment'));
-app.use(require('./routes/user'));
+app.use(require('./routes/index.router'));
+app.use(require('./routes/vet.router'));
+app.use(require('./routes/admin.router'));
+app.use(require('./routes/comment.router'));
+app.use(require('./routes/user.router'));
+app.use(require('./routes/announce.router'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));

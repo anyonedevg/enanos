@@ -1,5 +1,5 @@
 // requirements
-const user = require('../controllers/user');
+const user = require('../controllers/user.controller');
 const passport = require('passport');
 const router = require('express').Router();
 

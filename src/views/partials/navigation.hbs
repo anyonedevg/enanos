@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
 
 
 
@@ -14,6 +14,16 @@
       <li class="nav-item">
         <a class="nav-link" href="/vets">Veterinarias</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/announces">Animales perdidos</a>
+      </li>
+
+      {{#esAdmin user.role}}
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/add-admin">Admin</a>
+      </li>
+      
+      {{/esAdmin}}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
@@ -26,15 +36,23 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
+      {{#if user}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users/profile">Perfil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/logout">Salir</a>
+      </li>
+      {{else}}
       <li class="nav-item">
         <a class="nav-link" href="/users/login">Ingresa</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/users/signup">Regístrate</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/users/logout">Salir</a>
-      </li>
+      {{/if}}
+
+
     </ul>
   </div>
 

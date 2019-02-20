@@ -3,7 +3,7 @@
 
     <div class="col col-md-3">
 
-      <div class="card">
+      <div class="card" style="max-width:25rem;">
         <img src="{{vet.image_url}}" class="card-img-top" alt="">
         <div class="card-body">
           <h5 class="card-title">{{vet.vet_id.name}}</h5>
@@ -20,19 +20,62 @@
     </div>
 
     <div class="col col-md-7">
-      <h5 class="display-5">Cuenta tu experiencia</h5>
-      <div class="card">
+
+      <h5 class="display-5">Comparte tu experiencia</h5>
+
+      {{#if user}}
+
+      <div class="card mb-5">
         <div class="card-body">
           <form action="/comments/add-comment/{{vet.vet_id._id}}" method="POST">
             <input type="hidden" name="user_id" value="{{user._id}}">
             <div class="form-group">
-              <textarea class="form-control" name="content" placeholder="Ingresa tu Opinión"></textarea>
+              <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia"></textarea>
             </div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Comentar</button>
           </form>
         </div>
       </div>
+
+      {{else}}
+
+      <div class="card mb-5">
+        <div class="card-body">
+          <div class="card-text">
+            <p><a href="/users/signup">Regístrate</a> o <a href="/users/login">Ingresa</a> y comparte tu opinión.</p>
+          </div>
+        </div>
+      </div>
+
+      {{/if}}
+
+      <div class="div">
+        <ul class="list-group">
+          {{#each comments}}
+          <li class="list-group-item mb-1">
+            <div class="row">
+              <div class="col-1">
+                <img src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=45" alt="Avatar">
+                <p>{{user_id.username}}</p>
+              </div>
+
+              <div class="col-11">
+                <p style="word-wrap: break-word;">{{content}}</p>
+
+                <p class="text-muted">
+                  <i class="fas fa-clock"></i> {{timeago timestamp}}
+                  <p>
+              </div>
+
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+
     </div>
+
+
     <div class="col col-md-2">
       <p>Banner</p>
       <p>{{user._id}}</p>
