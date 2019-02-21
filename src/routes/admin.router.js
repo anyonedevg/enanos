@@ -64,8 +64,6 @@ router.get('/admin/vets', async (req, res) => {
 router.get('/admin/delete-vet/:vet_id', async (req, res) => {
   const { vet_id } = req.params;
 
-  const confirm = confirm('Desea eliminar este foto');
-
   // photo
   const photo = await Photo.findOneAndDelete({ vet_id });
   // vet
@@ -95,12 +93,57 @@ router.post('/admin/add-admin', passport.authenticate('local-admin-signup', {
 
 
 // update vet image
-router.post('/admin/update-vet', (req, res) => {
-  console.log('BODY');
-  console.log(req.body);
-  console.log(req.file);
+router.post('/admin/update-vet-image', async (req, res) => {
+  const { vet_id } = req.body;
+  const { path } = req.file;
+
+  try {
+
+    // add new photo to cloudinary
+    const cloudinaryResult = await cloudinary.v2.uploader.upload(path);
+    // if upload succeeded
+    if (cloudinaryResult) {
+
+      // get old photo data
+      const oldPhoto = await Photo.findOne({ vet_id: vet_id });
+
+      // create new photo
+      const newPhoto = new Photo({
+        vet_id: vet_id,
+        cloudinary_id: cloudinaryResult.public_id,
+        image_url: cloudinaryResult.secure_url
+      });
+      // save new photo to db
+      const newPhotoResult = await newPhoto.save();
+
+      // if save succeeded
+      if (newPhotoResult) {
+        // delete old photo from db
+        await Photo.findByIdAndDelete(oldPhoto._id);
+        // delete old photo from cloudinary
+        await cloudinary.v2.uploader.destroy(oldPhoto.cloudinary_id);
+      }
+
+      // delete photo from path
+      await fs.unlink(path);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
   res.redirect('/admin/vets');
 })
 
+
+// update vet data 
+router.post('/admin/update-vet-data', async (req, res) => {
+  const { vet_id, name, address, district } = req.body;
+  const updatedVet = await Vet.findByIdAndUpdate(vet_id, {
+    name: name,
+    address: address,
+    distric: district
+  });
+  res.redirect('/admin/vets');
+})
 
 module.exports = router;

@@ -14,20 +14,18 @@
       <li class="nav-item">
         <a class="nav-link" href="/vets">Veterinarias</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/announces">Animales perdidos</a>
-      </li>
 
       {{#esAdmin user.role}}
+
+      {{/esAdmin}}
+
       <li class="nav-item">
         <a class="nav-link" href="/admin/add-admin">Admin</a>
       </li>
-      
-      {{/esAdmin}}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          Cloudinary
+          Gestionar veterinarias
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/admin/add-vet">Añadir veterinaria</a>
@@ -37,9 +35,6 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       {{#if user}}
-      <li class="nav-item">
-        <a class="nav-link" href="/users/profile">Perfil</a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" href="/users/logout">Salir</a>
       </li>
