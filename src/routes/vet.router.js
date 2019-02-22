@@ -1,9 +1,9 @@
 // requeriments
 const router = require('express').Router();
-const { Vet, Comment, Photo } = require('../models');
+const { Like, Vet, Comment, Photo } = require('../models');
 
 
-// ver veterinarias
+// see vets
 router.get('/vets', async (req, res) => {
   let viewModel = { vets: {}, distritos: {} };
   let arregloFinal = [];
@@ -38,26 +38,34 @@ router.get('/vets', async (req, res) => {
   }
   viewModel.distritos = arregloFinal;
 
-  console.log(arregloFinal)
-  console.log(arregloFinal[0].vets)
-
   res.render('vet/vets', viewModel);
 });
 
 
-// ver veterinaria
+// see vet
 router.get('/vets/:vet_id', async (req, res) => {
-  let viewModel = { vet: {}, comments: {} };
+  let viewModel = { vet: {}, comments: {}, like: {} };
   const { vet_id } = req.params;
+  const vetViews = await Vet.findById(vet_id);
+  vetViews.views = vetViews.views + 1;
+  await vetViews.save();
+
   const vet = await Photo.findOne({ vet_id }).populate('vet_id');
   const comments = await Comment.find({ vet_id: vet_id }).populate('user_id').sort({ timestamp: -1 });
-  console.log('*****************');
-  console.log(comments);
-  console.log('*****************');
+
+  if (req.user) {
+    const { _id } = req.user;
+    console.log('ID', _id);
+
+    const like = await Like.find({ vet_id: vet_id, user_id: _id });
+    if (like) {
+      console.log('LIKE', like);
+      viewModel.like = like;
+    }
+
+  }
   if (vet) {
     viewModel.vet = vet;
-    // console.log(vet);
-    // console.log(viewModel);
   }
   if (comments) {
     viewModel.comments = comments;
