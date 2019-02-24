@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div class="col col-md-4">
+      <div class="card">
+        {{#if user}}
+        <div class="card-body">
+          <h5 class="card-title">Contáctame</h5>
+          <form action="/contact/opinion" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" name="name" class="form-control" placeholder="Nombre de la veterinaria">
+            </div>
+
+            <div class="form-group">
+              <label>Idea, sugerencia, mensaje..</label>
+              <textarea class="form-control" name="message" placeholder="Ingresa tu opinión"></textarea>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-share-square"></i> Enviar
+            </button>
+
+          </form>
+
+        </div>
+        {{else}}
+        <div class="card-body">
+          <div class="card-text">
+            <p><a href="/users/signup">Regístrate</a> o <a href="/users/login">Ingresa</a> y dame tu
+              opinión sobre <strong>Enanos</strong>.</p>
+          </div>
+        </div>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+</div>

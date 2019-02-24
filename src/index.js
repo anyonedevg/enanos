@@ -60,6 +60,7 @@ app.use(require('./routes/admin.router'));
 app.use(require('./routes/comment.router'));
 app.use(require('./routes/user.router'));
 app.use(require('./routes/like.router'));
+app.use(require('./routes/contact.router'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));
