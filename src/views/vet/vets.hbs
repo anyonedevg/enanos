@@ -1,11 +1,14 @@
 <div class="container">
 
-  <h3 class="font-weight-light mb-5">Veterinarias</h3>
+  <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+    <h3 class="font-weight-dark">Veterinarias</h3>
+    <p class="text-warning">¿No encuentras tu veterinaria?,<a href="/contact" class="text-warning"> Dime cuál es</a></p>
 
+  </div>
 
   {{#distritos}}
 
-  <h5 class="display-5">{{distrito}}</h5>
+  <h5 class="font-weight-light">{{distrito}}</h5>
   <hr class="mt-1 mb-4">
 
   <div class="row mb-5">

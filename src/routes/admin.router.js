@@ -147,7 +147,7 @@ router.post('/admin/update-vet-data', async (req, res) => {
 })
 
 // add post
-router.post('/admin/post', async (req, res) => {
+router.post('/admin/add-post', async (req, res) => {
   const { title, content } = req.body;
   const { path } = req.file;
 
@@ -169,5 +169,18 @@ router.post('/admin/post', async (req, res) => {
 
   res.redirect('/');
 });
+
+//delete post
+router.get('/admin/delete-post/:post_id', async (req, res) => {
+  const { post_id } = req.params;
+  const post = await Post.findByIdAndDelete(post_id);
+  try {
+    await cloudinary.v2.uploader.destroy(post.cloudinary_id);
+  } catch (e) {
+    console.log(e);
+  }
+  
+  res.redirect('/');
+})
 
 module.exports = router;
