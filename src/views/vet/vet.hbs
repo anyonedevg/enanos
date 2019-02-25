@@ -1,98 +1,84 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-
-    <div class="col col-md-3">
-
-      <div class="card" style="max-width:25rem;">
-        <img src="{{vet.image_url}}" class="card-img-top" alt="">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 mb-5">
+      <div class="card">
+        <img src="{{vet.image_url}}" class="card-img-top" alt="Imágen de la veterinaria">
         <div class="card-body">
-          <h5 class="card-title">{{vet.vet_id.name}}</h5>
+          <div class="d-flex justify-content-center align-items-center">
+            <h5 class="card-title my-auto">{{vet.vet_id.name}}</h5>
+          </div>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><i class="fas fa-location-arrow"></i> {{vet.vet_id.address}}</li>
+          <li class="list-group-item"><a href="#" class="card-link"><i class="fas fa-star"></i> Recomendaciones:
+              {{vet.vet_id.likes}}</a></li>
+          <li class="list-group-item"><a href="#" class="card-link"><i class="fas fa-eye"></i> Visitas:
+              {{vet.vet_id.views}}</a></li>
         </ul>
-        <div class="card-body">
-          <a href="#" class="card-link"><i class="fas fa-star"></i> Recomendaciones: {{vet.vet_id.likes}}</a>
-          <a href="#" class="card-link"><i class="fas fa-eye"></i> Visitas: {{vet.vet_id.views}}</a>
-        </div>
 
         {{#if user}}
-
         {{#unless like}}
         <div class="card-footer">
-          <form action="/likes/{{vet.vet_id._id}}" method="POST">
-            <input type="hidden" name="user_id" value="{{user._id}}">
-            <button type="submit" class="btn btn-secondary">¿Recomendarías esta veterinaria?</button>
-
-          </form>
+          <div class="d-flex justify-content-center">
+            <form action="/likes/{{vet.vet_id._id}}" method="POST">
+              <input type="hidden" name="user_id" value="{{user._id}}">
+              <button type="submit" class="btn btn-info">¿Recomendarías esta veterinaria?</button>
+            </form>
+          </div>
         </div>
         {{/unless}}
-
         {{/if}}
-
       </div>
-
     </div>
 
-    <div class="col col-md-7">
-
-      <h5 class="display-5">Comparte tu experiencia</h5>
-
-      {{#if user}}
+    <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
 
       <div class="card mb-5">
+        <h3 class="card-header font-weight-light">Comenta tu experiencia</h3>
         <div class="card-body">
+          {{#if user}}
           <form action="/comments/add-comment/{{vet.vet_id._id}}" method="POST">
             <input type="hidden" name="user_id" value="{{user._id}}">
             <div class="form-group">
-              <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia"></textarea>
+              <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia.." rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Comentar</button>
           </form>
-        </div>
-      </div>
-
-      {{else}}
-
-      <div class="card mb-5">
-        <div class="card-body">
+          {{else}}
           <div class="card-text">
-            <p><a href="/users/signup">Regístrate</a> o <a href="/users/login">Ingresa</a> y comparte tu
-              opinión.</p>
+            <p><a href="/users/login">Ingresa</a> o <a href="/users/signup">regístrate</a> y comparte tu
+              experiencia.</p>
           </div>
+          {{/if}}
         </div>
       </div>
 
-      {{/if}}
+      <ul class="list-group">
+        {{#each comments}}
+        <li class="list-group-item mb-1">
 
-      <div class="div">
-        <ul class="list-group">
-          {{#each comments}}
-          <li class="list-group-item mb-1">
-            <div class="row">
-              <div class="col-1">
-                <img src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=45" alt="Avatar">
-                <p>{{user_id.username}}</p>
-              </div>
+          <div class="media">
 
-              <div class="col-11">
-                <p style="word-wrap: break-word;">{{content}}</p>
+            <img class="align-self-start mr-3" src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=80"
+              alt="Avatar">
 
-                <p class="text-muted">
-                  <i class="fas fa-clock"></i> {{timeago timestamp}}
-                  <p>
-              </div>
+            <div class="media-body">
+              <h5 class="mt-0">{{user_id.username}}</h5>
+              <p style="word-wrap: break-word;">{{content}}</p>
 
+              <p class="text-muted">
+                <i class="fas fa-clock"></i> {{timeago timestamp}}
+                <p>
             </div>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
+
+
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
 
     </div>
 
-
-    <div class="col col-md-2">
-    </div>
   </div>
 </div>

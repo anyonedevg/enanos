@@ -1,43 +1,29 @@
 <div class="container">
 
-  <div class="row">
-    <h3 class="display-5 mb-5">Veterinarias</h3>
-  </div>
+  <h3 class="font-weight-light mb-5">Veterinarias</h3>
 
 
   {{#distritos}}
+
+  <h5 class="display-5">{{distrito}}</h5>
+  <hr class="mt-1 mb-4">
+
   <div class="row mb-5">
-
-    <div class="row col col-md-12">
-      <h5 class="display-5 mb-5 d-block">{{distrito}}</h5>
-    </div>
-
-
-    <div class="card-columns">
-      {{#vets}}
-      <div class="card" style="max-width:18rem;">
-        <img src="{{image_url}}" class="card-img-top">
-        <div class="card-body">
-          <h4 class="card-title">{{vet_id.name}}</h4>
-          <a href="/vets/{{vet_id._id}}" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Opina</a>
-        </div>
-      </div>
-      {{/vets}}
-    </div>
-
-  </div>
-  {{/distritos}}
-
-  <div class="row m-5">
-    <div class="col">
+    {{#vets}}
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 my-1">
       <div class="card">
-        <div class="card-body">
-          <div class="card-text">
-            <p>No encuentras tu veterinaria?. <a href="/contact">Dime</a> cuál es</p>
+        <img src="{{image_url}}" class="card-img-top">
+        <div class="card-body py-2">
+          <div class="row justify-content-center">
+            <a href="/vets/{{vet_id._id}}" class="btn btn-link">{{vet_id.name}} </a>
           </div>
         </div>
       </div>
     </div>
+    {{/vets}}
   </div>
+
+
+  {{/distritos}}
 
 </div>
