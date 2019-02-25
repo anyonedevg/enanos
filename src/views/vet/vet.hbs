@@ -5,17 +5,16 @@
         <img src="{{vet.image_url}}" class="card-img-top" alt="Imágen de la veterinaria">
         <div class="card-body">
           <div class="d-flex justify-content-center align-items-center">
-            <h5 class="card-title my-auto">{{vet.vet_id.name}}</h5>
+            <h5 class="card-title my-auto">{{vet.name}}</h5>
           </div>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><i class="fas fa-location-arrow"></i> {{vet.vet_id.address}}</li>
+          <li class="list-group-item"><i class="fas fa-location-arrow"></i> {{vet.address}}</li>
           <li class="list-group-item"><a href="#" class="card-link"><i class="fas fa-star"></i> Recomendaciones:
-              {{vet.vet_id.likes}}</a></li>
+              {{likes}}</a></li>
           <li class="list-group-item"><a href="#" class="card-link"><i class="fas fa-eye"></i> Visitas:
-              {{vet.vet_id.views}}</a></li>
+              {{vet.views}}</a></li>
         </ul>
-
         {{#if user}}
         {{#unless like}}
         <div class="card-footer">
@@ -37,8 +36,8 @@
         <h3 class="card-header font-weight-light">Comenta tu experiencia</h3>
         <div class="card-body">
           {{#if user}}
-          <form action="/comments/add-comment/{{vet.vet_id._id}}" method="POST">
-            <input type="hidden" name="user_id" value="{{user._id}}">
+          <form action="/comments/add-comment/{{vet._id}}" method="POST">
+            {{!-- <input type="hidden" name="user_id" value="{{user._id}}"> --}}
             <div class="form-group">
               <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia.." rows="3"></textarea>
             </div>

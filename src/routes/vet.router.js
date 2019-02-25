@@ -1,42 +1,28 @@
 // requeriments
 const router = require('express').Router();
-const { Like, Vet, Comment, Photo } = require('../models');
+const { Like, Vet, Comment } = require('../models');
 
 
 // see vets
 router.get('/vets', async (req, res) => {
-  let viewModel = { vets: {}, distritos: {} };
-  let arregloFinal = [];
+  let viewModel = { distritos: {} };
+  let vetsArray = [];
 
-  const districtsDB = await Vet.distinct('district');
-  for (let distrito of districtsDB) {
-    try {
+  const distritos = await Vet.distinct('district');
 
-      let arregloAux = [];
-
+  if (distritos) {
+    for (let distrito of distritos) {
       let objeto = {
-        "distrito": distrito,
-        "vets": []
+        distrito: distrito,
+        vets: []
       }
+      const vets = await Vet.find({ district: distrito });
+      objeto.vets = vets;
 
-      const vets = await Photo.find().populate({
-        path: 'vet_id',
-        match: { district: distrito }
-      });
-      for (const vet of vets) {
-        if (vet.vet_id) {
-          arregloAux.push(vet);
-        }
-      }
-
-      objeto.vets = arregloAux;
-
-      arregloFinal.push(objeto)
-    } catch (error) {
-      console.log(error)
+      vetsArray.push(objeto);
     }
+    viewModel.distritos = vetsArray;
   }
-  viewModel.distritos = arregloFinal;
 
   res.render('vet/vets', viewModel);
 });
@@ -44,33 +30,27 @@ router.get('/vets', async (req, res) => {
 
 // see vet
 router.get('/vets/:vet_id', async (req, res) => {
-  let viewModel = { vet: {}, comments: {}, like: {} };
+  let viewModel = { vet: {}, comments: {}, likes: Number };
   const { vet_id } = req.params;
-  const vetViews = await Vet.findById(vet_id);
-  vetViews.views = vetViews.views + 1;
-  await vetViews.save();
-
-  const vet = await Photo.findOne({ vet_id }).populate('vet_id');
-  const comments = await Comment.find({ vet_id: vet_id }).populate('user_id').sort({ timestamp: -1 });
-
-  if (req.user) {
-    const { _id } = req.user;
-    console.log('ID', _id);
-
-    const like = await Like.find({ vet_id: vet_id, user_id: _id });
-    if (like) {
-      console.log('LIKE', like);
-      viewModel.like = like;
-    }
-
-  }
+  const vet = await Vet.findById(vet_id);
   if (vet) {
     viewModel.vet = vet;
   }
+  const comments = await Comment.find({ vet_id: vet_id }).populate('user_id').sort({ timestamp: -1 });
   if (comments) {
     viewModel.comments = comments;
+    console.log(comments);
   }
+  let likes = await Like.find({ vet_id: vet_id }).countDocuments();
+  if (!likes) {
+    likes = 0
+  }
+  viewModel.likes = likes;
 
+  // const vetViews = await Vet.findById(vet_id);
+  // vetViews.views = vetViews.views + 1;
+  // await vetViews.save();
+  
   res.render('vet/vet', viewModel);
 });
 

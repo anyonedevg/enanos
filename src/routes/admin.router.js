@@ -1,10 +1,9 @@
 // requeriments
 const fs = require('fs-extra');
 const router = require('express').Router();
-const passport = require('passport');
 
 // models
-const { Photo, Post, Vet } = require('../models');
+const { Post, Vet } = require('../models');
 
 // cloudinary
 const cloudinary = require('cloudinary');
@@ -20,43 +19,36 @@ router.get('/admin/add-vet', (req, res) => {
 });
 
 router.post('/admin/add-vet', async (req, res) => {
+  const { name, address, district } = req.body;
+  const { path } = req.file;
+
   try {
-    const { path } = req.file;
-    const { address, district, name } = req.body;
-
     const cloudinaryResult = await cloudinary.v2.uploader.upload(path);
-    await fs.unlink(path);
-
     const newVet = new Vet({
       name: name,
       address: address,
-      district: district
-    });
-    const newVetResult = await newVet.save();
-
-    const newPhoto = new Photo({
-      vet_id: newVetResult._id,
+      district: district,
       cloudinary_id: cloudinaryResult.public_id,
       image_url: cloudinaryResult.secure_url
     });
-    await newPhoto.save();
-
+    await newVet.save();
   } catch (e) {
     console.log(e);
   }
+  await fs.unlink(path);
 
-  res.redirect('/admin/vets');
+  res.redirect('/vets');
 
 });
 
 // see vets
 router.get('/admin/vets', async (req, res) => {
   let viewModel = { vets: {} };
-  const vets = await Photo.find().populate('vet_id');
+  const vets = await Vet.find();
   if (vets) {
     viewModel.vets = vets;
   }
-
+  console.log(vets);
   res.render('admin/vets', viewModel);
 });
 
@@ -78,18 +70,6 @@ router.get('/admin/delete-vet/:vet_id', async (req, res) => {
   res.redirect('/admin/vets');
 
 });
-
-// add admin
-router.get('/admin/add-admin', (req, res) => {
-  res.render('admin/add-admin');
-});
-
-
-router.post('/admin/add-admin', passport.authenticate('local-admin-signup', {
-  successRedirect: '/vets',
-  failureRedirect: '/admin/signup',
-  failureFlash: true
-}));
 
 
 // update vet image
@@ -160,7 +140,7 @@ router.post('/admin/add-post', async (req, res) => {
       content: content,
       cloudinary_id: cloudinaryResult.public_id,
       image_url: cloudinaryResult.secure_url
-    })
+    });
     await newPost.save();
   } catch (e) {
     console.log(e);
@@ -179,7 +159,7 @@ router.get('/admin/delete-post/:post_id', async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-  
+
   res.redirect('/');
 })
 
