@@ -15,9 +15,9 @@
         <a class="nav-link" href="/vets">Veterinarias</a>
       </li>
 
-      {{#esAdmin user.role}}
+      {{#isAdmin user.role}}
 
-      {{/esAdmin}}
+      {{/isAdmin}}
 
       <li class="nav-item">
         <a class="nav-link" href="/admin/add-admin">Admin</a>

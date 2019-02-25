@@ -8,11 +8,16 @@ helpers.timeago = timestamp => {
   return moment(timestamp).startOf('minute').fromNow()
 };
 
+helpers.postDate = timestamp => {
+  moment.locale('es');
+  return moment(timestamp).format('LLLL');
+};
+
 helpers.shortdate = timestamp => {
   return moment(timestamp).format('L')
 };
 
-helpers.esAdmin = (role, options) => {
+helpers.isAdmin = (role, options) => {
   const fnTrue = options.fn;
   const fnFalse = options.inverse;
   return role === "administrador" ? fnTrue() : fnFalse();

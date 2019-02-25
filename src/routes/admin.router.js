@@ -4,7 +4,7 @@ const router = require('express').Router();
 const passport = require('passport');
 
 // models
-const { Photo, Vet } = require('../models');
+const { Photo, Post, Vet } = require('../models');
 
 // cloudinary
 const cloudinary = require('cloudinary');
@@ -145,5 +145,29 @@ router.post('/admin/update-vet-data', async (req, res) => {
   });
   res.redirect('/admin/vets');
 })
+
+// add post
+router.post('/admin/post', async (req, res) => {
+  const { title, content } = req.body;
+  const { path } = req.file;
+
+  console.log(req.file);
+
+  try {
+    const cloudinaryResult = await cloudinary.v2.uploader.upload(path);
+    const newPost = new Post({
+      title: title,
+      content: content,
+      cloudinary_id: cloudinaryResult.public_id,
+      image_url: cloudinaryResult.secure_url
+    })
+    await newPost.save();
+  } catch (e) {
+    console.log(e);
+  }
+  await fs.unlink(path);
+
+  res.redirect('/');
+});
 
 module.exports = router;
