@@ -16,13 +16,13 @@ $(function () {
   })
 })
 
-$('.btn-edit-general').on('click', function () {
+$('.btn-edit-vet-image').on('click', function () {
   var $this = $(this);
-  var id = $this.next().attr('href').split('/').pop();
+  var id = $this.parent().next().attr('href').split('/').pop();
   $('#update_vet_image').val(id);
 })
 
-$('.btn-edit-data').on('click', function () {
+$('.btn-edit-vet-data').on('click', function () {
   var $this = $(this);
   var id = $this.parent().next().attr('href').split('/').pop();;
   $('#update_vet_data').val(id);
