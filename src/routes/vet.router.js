@@ -22,7 +22,6 @@ router.get('/vets', async (req, res) => {
       vetsArray.push(objeto);
     }
     viewModel.distritos = vetsArray;
-    console.log(vetsArray);
   }
 
   res.render('vet/vets', viewModel);
@@ -31,9 +30,12 @@ router.get('/vets', async (req, res) => {
 
 // see vet
 router.get('/vets/:vet_id', async (req, res) => {
-  let viewModel = { vet: {}, comments: {}, likes: Number };
+  let viewModel = { vet: {}, comments: {}, like: {}, likes: Number };
   const { vet_id } = req.params;
   const vet = await Vet.findById(vet_id);
+  vet.views++;
+  await vet.save();
+
   if (vet) {
     viewModel.vet = vet;
   }
@@ -47,6 +49,13 @@ router.get('/vets/:vet_id', async (req, res) => {
   }
   viewModel.likes = likes;
 
+  if (req.user) {
+    const { _id } = req.user;
+    const like = await Like.find({ vet_id: vet_id, user_id: _id });
+    if (like.length > 0) {
+      viewModel.like = like;
+    }
+  }
   res.render('vet/vet', viewModel);
 });
 

@@ -16,12 +16,11 @@
               {{vet.views}}</a></li>
         </ul>
         {{#if user}}
-        {{#unless like}}
+        {{#unless like.length}}
         <div class="card-footer">
           <div class="d-flex justify-content-center">
-            <form action="/likes/{{vet.vet_id._id}}" method="POST">
-              <input type="hidden" name="user_id" value="{{user._id}}">
-              <button type="submit" class="btn btn-info">¿Recomendarías esta veterinaria?</button>
+            <form action="/likes/{{vet._id}}" method="POST">
+              <button type="submit" class="btn btn-outline-success">Recomendar veterinaria</button>
             </form>
           </div>
         </div>
@@ -36,7 +35,7 @@
         <h3 class="card-header font-weight-light">Comenta tu experiencia</h3>
         <div class="card-body">
           {{#if user}}
-          <form action="/ccomments/add-vet-comment/{{vet._id}}" method="POST">
+          <form action="/comments/add-vet-comment/{{vet._id}}" method="POST">
             <div class="form-group">
               <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia.." rows="3"></textarea>
             </div>
