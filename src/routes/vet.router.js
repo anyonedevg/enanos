@@ -1,6 +1,6 @@
 // requeriments
 const router = require('express').Router();
-const { Like, Vet, Comment } = require('../models');
+const { Like, Vet, VetComment } = require('../models');
 
 
 // see vets
@@ -8,8 +8,8 @@ router.get('/vets', async (req, res) => {
   let viewModel = { distritos: {} };
   let vetsArray = [];
 
-  const distritos = await Vet.distinct('district');
-
+  const distritos = await Vet.find().distinct('district');
+  distritos.sort();
   if (distritos) {
     for (let distrito of distritos) {
       let objeto = {
@@ -22,6 +22,7 @@ router.get('/vets', async (req, res) => {
       vetsArray.push(objeto);
     }
     viewModel.distritos = vetsArray;
+    console.log(vetsArray);
   }
 
   res.render('vet/vets', viewModel);
@@ -36,10 +37,9 @@ router.get('/vets/:vet_id', async (req, res) => {
   if (vet) {
     viewModel.vet = vet;
   }
-  const comments = await Comment.find({ vet_id: vet_id }).populate('user_id').sort({ timestamp: -1 });
+  const comments = await VetComment.find({ vet_id: vet_id }).populate('user_id').sort({ timestamp: -1 });
   if (comments) {
     viewModel.comments = comments;
-    console.log(comments);
   }
   let likes = await Like.find({ vet_id: vet_id }).countDocuments();
   if (!likes) {
@@ -47,10 +47,6 @@ router.get('/vets/:vet_id', async (req, res) => {
   }
   viewModel.likes = likes;
 
-  // const vetViews = await Vet.findById(vet_id);
-  // vetViews.views = vetViews.views + 1;
-  // await vetViews.save();
-  
   res.render('vet/vet', viewModel);
 });
 

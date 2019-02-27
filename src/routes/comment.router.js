@@ -1,25 +1,43 @@
 // requeriments
 const router = require('express').Router();
-const { Comment } = require('../models');
-const comment = require('../controllers/comment.controller');
+const { VetComment, PostComment } = require('../models');
 
-// add comment
-router.post('/comments/add-comment/:vet_id', async (req, res) => {
+// add vet comment
+router.post('/comments/add-vet-comment/:vet_id', async (req, res) => {
   const { vet_id } = req.params;
   const { content } = req.body;
   const { _id } = req.user;
 
   if (_id) {
-    const newComment = new Comment({
+    const newVetComment = new VetComment({
       vet_id: vet_id,
       user_id: _id,
       content: content
     });
-    await newComment.save();
+    await newVetComment.save();
   }
 
   res.redirect(`/vets/${vet_id}`);
 
 });
+
+// add post comment
+router.post('/comments/add-post-comment/:post_id', async (req, res) => {
+  const { post_id } = req.params;
+  const { content } = req.body;
+  const { _id } = req.user;
+
+  if (_id) {
+    const newPostComment = new PostComment({
+      post_id: post_id,
+      user_id: _id,
+      content: content
+    });
+    await newPostComment.save();
+  }
+
+  res.redirect('/');
+});
+
 
 module.exports = router;

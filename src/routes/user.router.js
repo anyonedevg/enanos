@@ -6,7 +6,7 @@ const router = require('express').Router();
 // login
 router.get('/users/login', user.Login);
 router.post('/users/login', passport.authenticate('local-login', {
-  successRedirect: '/vets',
+  successRedirect: '/',
   failureRedirect: '/users/login',
   failureFlash: true
 }));
@@ -14,7 +14,7 @@ router.post('/users/login', passport.authenticate('local-login', {
 // signup
 router.get('/users/signup', user.Signup);
 router.post('/users/signup', passport.authenticate('local-signup', {
-  successRedirect: '/vets',
+  successRedirect: '/',
   failureRedirect: '/users/signup',
   failureFlash: true
 }));

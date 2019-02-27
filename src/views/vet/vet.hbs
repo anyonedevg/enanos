@@ -36,8 +36,7 @@
         <h3 class="card-header font-weight-light">Comenta tu experiencia</h3>
         <div class="card-body">
           {{#if user}}
-          <form action="/comments/add-comment/{{vet._id}}" method="POST">
-            {{!-- <input type="hidden" name="user_id" value="{{user._id}}"> --}}
+          <form action="/ccomments/add-vet-comment/{{vet._id}}" method="POST">
             <div class="form-group">
               <textarea class="form-control" name="content" placeholder="Ingresa tu experiencia.." rows="3"></textarea>
             </div>
@@ -58,8 +57,8 @@
         {{#each comments}}
         <li class="list-group-item mb-1">
           <div class="media">
-            <img class="align-self-start mr-3" src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=80"
-              alt="Avatar">
+            <img class="align-self-start mr-3 rounded"
+              src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=80" alt="Avatar">
             <div class="media-body">
               <h5 class="mt-0">{{user_id.username}}</h5>
               <p style="word-wrap: break-word;">{{content}}</p>

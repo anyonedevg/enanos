@@ -11,14 +11,51 @@
           </form>
           {{/isAdmin}}
         </div>
-        <p class="lead"> por Enanos </p>
+        <p class="lead"> por Enanos</p>
         <p>Publicado el {{postDate timestamp}}</p>
         <img class="img-fluid rounded" src="{{image_url}}" alt="Post image">
         <p class="my-2">{{content}}</p>
       </div>
+
+      <div class="card my-4">
+        <h3 class="card-header font-weight-light">Deja un comentario</h3>
+        <div class="card-body">
+          {{#if ../user}}
+          <form action="comments/add-post-comment/{{_id}}" method="POST">
+            <div class="form-group">
+              <textarea class="form-control" name="content" placeholder="Ingresa tu comentario.." rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-comment-alt"></i> Comentar</button>
+          </form>
+          {{else}}
+          <div class="card-text">
+            <p><a href="/users/login">Ingresa</a> o <a href="/users/signup">regístrate</a> y comenta</p>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+      <ul class="list-group">
+        {{#each comments}}
+        <li class="list-group-item mb-1">
+          <div class="media">
+            <img class="align-self-start mr-3 rounded"
+              src="http://gravatar.com/avatar/{{user_id.gravatar}}?d=monsterid&s=80" alt="Avatar">
+            <div class="media-body">
+              <h5 class="mt-0">{{user_id.username}}</h5>
+              <p style="word-wrap: break-word;">{{content}}</p>
+              <p class="text-muted">
+                <i class="fas fa-clock"></i> {{timeago timestamp}}
+                <p>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
       <hr class="mb-5">
       {{/each}}
     </div>
+
     <div class="col-md-4">
       {{#isAdmin user.role}}
       <div class="card my-4">
@@ -46,6 +83,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- Modal -->
