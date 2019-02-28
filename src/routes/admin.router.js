@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const router = require('express').Router();
 
 // models
-const { Post, Vet } = require('../models');
+const { Post, PostComment, Vet } = require('../models');
 
 // cloudinary
 const cloudinary = require('cloudinary');
@@ -131,6 +131,7 @@ router.post('/admin/add-post', async (req, res) => {
 //delete post
 router.get('/admin/delete-post/:post_id', async (req, res) => {
   const { post_id } = req.params;
+  await PostComment.deleteMany({ post_id: post_id });
   const post = await Post.findByIdAndDelete(post_id);
   try {
     await cloudinary.v2.uploader.destroy(post.cloudinary_id);

@@ -3,8 +3,6 @@ const { Post, PostComment } = require('../models');
 
 router.get('/', async (req, res) => {
   let viewModel = { posts: {} };
-  // const posts2 = await Post.find().sort({ timestamp: -1 });
-  // viewModel.posts = posts2;
   let postsArrays = [];
   let posts = [];
 
@@ -16,7 +14,6 @@ router.get('/', async (req, res) => {
     posts.push(postAggregate._id);
   }
 
-  console.log(posts);
   if (posts) {
     for (let post_id of posts) {
       const post = await Post.findById(post_id);
@@ -35,7 +32,6 @@ router.get('/', async (req, res) => {
     }
     viewModel.posts = postsArrays;
   }
-  console.log(postsArrays[0])
   res.render('index', viewModel);
 });
 
