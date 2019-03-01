@@ -22,6 +22,6 @@ router.post('/contact/message', async (req, res) => {
 
   send(name, html);
 
-  res.redirect('/contact');
+  res.redirect('/');
 });
 module.exports = router;
